@@ -41,9 +41,7 @@ h1{
   background: rgba(255,255,255,0.05);
   transition: all 0.25s ease;
 }
-.back-btn:hover{
-  background: rgba(255,255,255,0.12);
-}
+.back-btn:hover{ background: rgba(255,255,255,0.12); }
 .card{
   width:100%;
   max-width:700px;
@@ -54,20 +52,13 @@ h1{
   padding:25px;
   box-shadow: 0 12px 30px rgba(0,0,0,0.25);
 }
-table{
-  width:100%;
-  border-collapse:collapse;
-  table-layout:auto;
-}
+table{width:100%;border-collapse:collapse;}
 th,td{
   padding:14px 12px;
   text-align:center;
   border-bottom:1px solid rgba(255,255,255,0.2);
 }
-th{
-  font-weight:700;
-  background: rgba(255,255,255,0.1);
-}
+th{font-weight:700;background: rgba(255,255,255,0.1);}
 .status-text{
   font-weight:600;
   font-size:0.95rem;
@@ -77,20 +68,39 @@ th{
   justify-content:center;
   gap:6px;
 }
-.status-text .dot{
-  font-size:1.2rem;
-}
-.status-approve .dot { color: #39ff14; }   
-.status-process .dot { color: #facc15; }   
-
+.status-text .dot{font-size:1.2rem;}
+.status-approve .dot{color:#39ff14;}
+.status-process .dot{color:#facc15;}
 .smartlink-text{
   font-weight:600;
   color:#39f;
   text-decoration:underline;
   pointer-events:none;
-  cursor:default;
 }
-
+.pagination{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin-top:20px;
+}
+.pagination button{
+  background:rgba(255,255,255,0.1);
+  border:none;
+  color:#fff;
+  padding:8px 18px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+  transition:all 0.25s ease;
+}
+.pagination button:hover{
+  background:rgba(255,255,255,0.2);
+}
+.pagination button:disabled{
+  opacity:0.3;
+  cursor:not-allowed;
+}
 footer{
   margin-top:35px;
   color:rgba(255,255,255,0.6);
@@ -105,11 +115,10 @@ footer{
 <body>
 
 <h1>ILHAM RMX SG - Releases</h1>
-
 <a href="https://dynoticid.github.io/smartlink/" class="back-btn">Back to Artists</a>
 
 <div class="card">
-  <table>
+  <table id="releaseTable">
     <thead>
       <tr>
         <th>Title</th>
@@ -117,75 +126,90 @@ footer{
         <th>Smartlink</th>
       </tr>
     </thead>
-    <tbody>
-      <!-- Lagu Process -->
-      <tr>
-        <td>DROP ENAGGG</td>
-        <td><span class="status-text status-process">Process<span class="dot">•</span></span></td>
-        <td>Not available</td>
-      </tr>
-      <tr>
-        <td>DROP INDOBOUNCE</td>
-        <td><span class="status-text status-process">Process<span class="dot">•</span></span></td>
-        <td>Not available</td>
-      </tr>
-      <tr>
-        <td>BBHC GASS POLL</td>
-        <td><span class="status-text status-process">Process<span class="dot">•</span></span></td>
-        <td>Not available</td>
-      </tr>
-      <tr>
-        <td>Orang Yang Salah</td>
-        <td><span class="status-text status-process">Process<span class="dot">•</span></span></td>
-        <td>Not available</td>
-      </tr>
-
-      <!-- Lagu Approve -->
-      <tr>
-        <td>DROP JOMOK</td>
-        <td><span class="status-text status-approve">Approve<span class="dot">•</span></span></td>
-        <td><span class="smartlink-text">Link</span></td>
-      </tr>
-      <tr>
-        <td>PERAWAN KOTA MELODI TANTE</td>
-        <td><span class="status-text status-approve">Approve<span class="dot">•</span></span></td>
-        <td><span class="smartlink-text">Link</span></td>
-      </tr>
-      <tr>
-        <td>Vario Dum Enaff</td>
-        <td><span class="status-text status-approve">Approve<span class="dot">•</span></span></td>
-        <td><span class="smartlink-text">Link</span></td>
-      </tr>
-      <tr>
-        <td>DROP ENAFF BARUDAK SGANK</td>
-        <td><span class="status-text status-approve">Approve<span class="dot">•</span></span></td>
-        <td><span class="smartlink-text">Link</span></td>
-      </tr>
-      <tr>
-        <td>Ayo Goyang Enaff</td>
-        <td><span class="status-text status-approve">Approve<span class="dot">•</span></span></td>
-        <td><span class="smartlink-text">Link</span></td>
-      </tr>
-      <tr>
-        <td>Aishiteru 2</td>
-        <td><span class="status-text status-approve">Approve<span class="dot">•</span></span></td>
-        <td><span class="smartlink-text">Link</span></td>
-      </tr>
-      <tr>
-        <td>DROP BBHC KEJEPIT</td>
-        <td><span class="status-text status-approve">Approve<span class="dot">•</span></span></td>
-        <td><span class="smartlink-text">Link</span></td>
-      </tr>
-      <tr>
-        <td>Hamil Duluan</td>
-        <td><span class="status-text status-approve">Approve<span class="dot">•</span></span></td>
-        <td><span class="smartlink-text">Link</span></td>
-      </tr>
+    <tbody id="tableBody">
+      <!-- Data akan diisi oleh JavaScript -->
     </tbody>
   </table>
+
+  <div class="pagination">
+    <button id="prevBtn">Prev</button>
+    <button id="nextBtn">Next</button>
+  </div>
 </div>
 
 <footer>© 2025 Dynotic ID</footer>
+
+<script>
+const releases = [
+  // Process
+  {title:"DROP ENAGGG", status:"Process", smartlink:"Not available"},
+  {title:"DROP INDOBOUNCE", status:"Process", smartlink:"Not available"},
+  {title:"BBHC GASS POLL", status:"Process", smartlink:"Not available"},
+  {title:"Orang Yang Salah", status:"Process", smartlink:"Not available"},
+  // Approve
+  {title:"DROP JOMOK", status:"Approve", smartlink:"Link"},
+  {title:"PERAWAN KOTA MELODI TANTE", status:"Approve", smartlink:"Link"},
+  {title:"Vario Dum Enaff", status:"Approve", smartlink:"Link"},
+  {title:"DROP ENAFF BARUDAK SGANK", status:"Approve", smartlink:"Link"},
+  {title:"Ayo Goyang Enaff", status:"Approve", smartlink:"Link"},
+  {title:"Aishiteru 2", status:"Approve", smartlink:"Link"},
+  {title:"DROP BBHC KEJEPIT", status:"Approve", smartlink:"Link"},
+  {title:"Hamil Duluan", status:"Approve", smartlink:"Link"}
+];
+
+const rowsPerPage = 5;
+let currentPage = 1;
+const tableBody = document.getElementById("tableBody");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+function renderTable(page){
+  tableBody.innerHTML = "";
+  const start = (page - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
+  const paginated = releases.slice(start, end);
+
+  for(let r of paginated){
+    const tr = document.createElement("tr");
+    const td1 = document.createElement("td");
+    const td2 = document.createElement("td");
+    const td3 = document.createElement("td");
+
+    td1.textContent = r.title;
+
+    if(r.status === "Approve"){
+      td2.innerHTML = `<span class="status-text status-approve">Approve<span class="dot">•</span></span>`;
+      td3.innerHTML = `<span class="smartlink-text">${r.smartlink}</span>`;
+    } else {
+      td2.innerHTML = `<span class="status-text status-process">Process<span class="dot">•</span></span>`;
+      td3.textContent = r.smartlink;
+    }
+
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    tr.appendChild(td3);
+    tableBody.appendChild(tr);
+  }
+
+  prevBtn.disabled = page === 1;
+  nextBtn.disabled = end >= releases.length;
+}
+
+prevBtn.addEventListener("click", ()=>{
+  if(currentPage > 1){
+    currentPage--;
+    renderTable(currentPage);
+  }
+});
+nextBtn.addEventListener("click", ()=>{
+  if(currentPage * rowsPerPage < releases.length){
+    currentPage++;
+    renderTable(currentPage);
+  }
+});
+
+renderTable(currentPage);
+</script>
 
 </body>
 </html>
